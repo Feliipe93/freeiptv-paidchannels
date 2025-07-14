@@ -1,0 +1,1862 @@
+ https://embed.ksdjugfsddeports.fun/   // pagina donde mlas paginas de abajo obtiene  las urls para mlos streams
+
+ https://www.telegratishd.com/
+https://www.tvplusgratis2.com/
+https://www.cablevisionhd.com/
+
+
+ uqiue tiene de malo este script quiero extrer las urls de estas paginas de streams de nalaes iptv  gratuitos  https://www.tvplusgratis2.com/   esta https://www.vertvcable.com/ y esta https://www.cablevisionhd.com/ y esta https://www.telegratishd.com/ extraer las urls directar y en base a estas generar la url  me va a dar la opcion apra extraer urls por paginas y con esto generar las urls separadas por paginas o todas  las paginas en una m3u organizada
+
+
+ #!/usr/bin/env python3
+
+import os
+import subprocess
+import sys
+import time
+import re
+
+def parse_m3u(file_path):
+    """Parse an M3U file and extract stream URLs along with their channel names."""
+    streams = []
+    channel_names = []
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            lines = file.readlines()
+            for line in lines:
+                line = line.strip()
+                if line.startswith("#EXTINF:"):
+                    # Extract channel name (tvg-name)
+                    match = re.search(r'tvg-name="([^"]+)"', line)
+                    if match:
+                        channel_name = match.group(1)
+                        # Ignore lines with tvg-name containing "✦●✦"
+                        if "✦●✦" not in channel_name:
+                            channel_names.append(channel_name)
+                        else:
+                            channel_names.append(None)  # Add None for this stream to skip later
+                elif line and not line.startswith("#"):
+                    streams.append(line)
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+        return [], []
+
+    return streams, channel_names, lines  # Return streams, channel names, and original lines
+
+def check_stream_ffprobe(url):
+    """Check if a stream is online using ffprobe."""
+    try:
+        command = [
+            "ffprobe", 
+            "-hide_banner", 
+            "-loglevel", "error", 
+            "-i", url
+        ]
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=10)
+        if result.returncode == 0:
+            return True  # Stream is online
+        else:
+            return False  # Stream is offline
+    except subprocess.TimeoutExpired:
+        return False  # Timeout indicates offline stream
+    except Exception as e:
+        print(f"Error checking stream {url}: {e}")
+        return False
+
+def update_m3u(file_path, results, original_lines):
+    """Update the M3U file by commenting out non-working streams."""
+    updated_lines = []
+    for line in original_lines:
+        stripped_line = line.strip()
+        if stripped_line and not stripped_line.startswith("#") and stripped_line in results:
+            status = results[stripped_line]
+            if "❌ Offline" in status:
+                # Comment out the offline stream
+                updated_lines.append(f"#DISABLED {line.strip()}\n")
+            else:
+                # Restore previously disabled streams if they're online
+                updated_lines.append(line.replace("#DISABLED ", ""))
+        else:
+            updated_lines.append(line)
+    
+    # Write the updated lines back to the file
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.writelines(updated_lines)
+
+def display_progress_bar(current, total):
+    """Display an animated progress bar."""
+    bar_length = 40  # Length of the progress bar
+    progress = int(bar_length * current / total)
+    bar = f"[{'#' * progress}{'-' * (bar_length - progress)}]"
+    sys.stdout.write(f"\r{bar} {current}/{total} streams checked")
+    sys.stdout.flush()
+
+def check_streams(file_path):
+    """Check all streams in the given M3U file."""
+    streams, channel_names, original_lines = parse_m3u(file_path)
+    if not streams:
+        print("No streams found in the file or the file could not be parsed.")
+        return {}
+
+    results = {}
+    total_streams = len(streams)
+    offline_streams = []  # Store offline streams to display them at the end
+
+    try:
+        for index, (url, channel_name) in enumerate(zip(streams, channel_names), start=1):
+            if channel_name is None:
+                # Skip streams with tvg-name containing "✦●✦"
+                continue
+
+            is_online = check_stream_ffprobe(url)
+            status = "✅ Online" if is_online else f"❌ Offline - {channel_name} - {url}"
+            results[url] = status
+
+            # If offline, store the offline stream
+            if not is_online:
+                offline_streams.append(status)
+
+            # Update the progress bar
+            display_progress_bar(index, total_streams)
+
+        # Print offline summary at the end
+        if offline_streams:
+            print("\n\nOffline Streams Summary:")
+            for offline in offline_streams:
+                print(offline)
+
+        # Update the M3U file based on the results
+        update_m3u(file_path, results, original_lines)
+
+        print()  # Newline after the progress bar
+    except KeyboardInterrupt:
+        print("\n\nProcess interrupted by user. Cleaning up and exiting...")
+        sys.exit(0)
+
+    return results
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: ./iptv_check.py <path_to_m3u_file>")
+        return
+
+    input_file = sys.argv[1]
+    if not os.path.exists(input_file):
+        print(f"Error: File '{input_file}' not found. Please check the path and try again.")
+        return
+
+    print(f"Starting to check streams in '{input_file}'...\n")
+    check_streams(input_file)
+
+if __name__ == "__main__":
+    main()
+Example output:
+@ubuntu:~/scripts$ ./iptv_check.py iptv.m3u8
+Starting to check streams in 'iptv.m3u8'...
+
+[########################################] 147/147 streams checked
+
+Offline Streams Summary:
+❌ Offline - AR| GOLD HD - http://example.com/yxcycyxc
+❌ Offline - AR| SUPER HD - http://example.com/173
+❌ Offline - AR| CNN - http://example.com/40149
+❌ Offline - AR| 3 HD - http://example.com/174
+❌ Offline - AR| SCIENCE HD - http://example.com/160
+❌ Offline - AR| HOME HD - http://example.com/17
+
+
+los urls directos ay que en smart tv con ssiptv no se peuden reprudicr los videos de enalces urls por eso deben ser directos apra que se reproduzcan de forma automatica a traves del m3u
+
+
+agrega proxys veridifcos por verificacion muchas veces etas paginas bloquean lso bots de una ip y hasata ahi llegamos implementa todo lo necesario para que tengamos exito
+
+ ahs que me de las opciones seleccionando numero para que pueda elegir  que quiero hacer en todos los aspectos que te mencione
+
+
+
+ bajo esa peticion me hicieron este script
+
+ 📋 Menús Disponibles:
+Menú Principal:
+1. Extraer streams de páginas web
+2. Verificar archivo M3U existente  
+3. Salir
+Menú de Extracción:
+1. tvplusgratis2.com
+2. vertvcable.com
+3. cablevisionhd.com
+4. telegratishd.com
+5. Todas las páginas
+6. Selección múltiple (ej: 1,2,4)
+7. Volver al menú principal
+Menú de Verificación:
+1. Sí, verificar todos los streams
+2. No, guardar sin verificar
+3. Cancelar
+Menú de Guardado:
+1. Archivo único combinado
+2. Archivos separados por página
+3. Ambos (combinado + separados)
+4. No guardar
+🚀 Flujo de Trabajo:
+
+Ejecutas el script
+Seleccionas extraer streams (opción 1)
+Eliges las páginas (individual, múltiple o todas)
+Decides si verificar los streams extraídos
+Seleccionas cómo guardar (combinado, separado o ambos)
+
+💡 Características Nuevas:
+
+Menú completamente interactivo con números
+Selección múltiple (1,2,4 para varias páginas)
+Verificación opcional de streams
+Múltiples opciones de guardado
+Progreso visual durante verificación
+Manejo de errores mejorado
+Compatible con Windows sin problemas
+
+📦 Dependencias:
+bashpip install requests beautifulsoup4 lxml
+Ahora simplemente ejecuta python iptv.py y tendrás un menú completo e intuitivo para todas las operaciones! 🎉
+
+
+#!/usr/bin/env python3
+
+import os
+import subprocess
+import sys
+import time
+import re
+import requests
+from bs4 import BeautifulSoup
+import urllib.parse
+from urllib.parse import urljoin
+import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import threading
+
+class IPTVExtractor:
+    def __init__(self):
+        self.session = requests.Session()
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        })
+        self.lock = threading.Lock()
+        
+    def extract_tvplusgratis2(self):
+        """Extrae streams de tvplusgratis2.com"""
+        print("Extrayendo streams de tvplusgratis2.com...")
+        streams = []
+        try:
+            response = self.session.get('https://www.tvplusgratis2.com/', timeout=15)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Buscar enlaces de canales
+            channel_links = soup.find_all('a', href=True)
+            for link in channel_links:
+                href = link.get('href')
+                if href and ('canal' in href.lower() or 'channel' in href.lower()):
+                    full_url = urljoin('https://www.tvplusgratis2.com/', href)
+                    channel_name = link.get_text(strip=True)
+                    
+                    # Obtener la URL directa del stream
+                    stream_url = self.get_direct_stream_url(full_url)
+                    if stream_url:
+                        streams.append({
+                            'name': channel_name,
+                            'url': stream_url,
+                            'source': 'tvplusgratis2'
+                        })
+                        
+        except Exception as e:
+            print(f"Error extrayendo de tvplusgratis2: {e}")
+            
+        return streams
+    
+    def extract_vertvcable(self):
+        """Extrae streams de vertvcable.com"""
+        print("Extrayendo streams de vertvcable.com...")
+        streams = []
+        try:
+            response = self.session.get('https://www.vertvcable.com/', timeout=15)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Buscar iframes y fuentes de video
+            iframes = soup.find_all('iframe')
+            for iframe in iframes:
+                src = iframe.get('src')
+                if src and any(ext in src for ext in ['.m3u8', '.ts', 'stream']):
+                    channel_name = f"Canal {len(streams) + 1}"
+                    streams.append({
+                        'name': channel_name,
+                        'url': src,
+                        'source': 'vertvcable'
+                    })
+                    
+            # Buscar enlaces directos a streams
+            links = soup.find_all('a', href=True)
+            for link in links:
+                href = link.get('href')
+                if href and any(ext in href for ext in ['.m3u8', '.ts']):
+                    channel_name = link.get_text(strip=True) or f"Canal {len(streams) + 1}"
+                    streams.append({
+                        'name': channel_name,
+                        'url': href,
+                        'source': 'vertvcable'
+                    })
+                    
+        except Exception as e:
+            print(f"Error extrayendo de vertvcable: {e}")
+            
+        return streams
+    
+    def extract_cablevisionhd(self):
+        """Extrae streams de cablevisionhd.com"""
+        print("Extrayendo streams de cablevisionhd.com...")
+        streams = []
+        try:
+            response = self.session.get('https://www.cablevisionhd.com/', timeout=15)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Buscar scripts con configuraciones de stream
+            scripts = soup.find_all('script')
+            for script in scripts:
+                if script.string:
+                    # Buscar URLs de streams en JavaScript
+                    m3u8_matches = re.findall(r'["\']([^"\']*\.m3u8[^"\']*)["\']', script.string)
+                    for match in m3u8_matches:
+                        if 'http' in match:
+                            streams.append({
+                                'name': f"Canal {len(streams) + 1}",
+                                'url': match,
+                                'source': 'cablevisionhd'
+                            })
+                            
+        except Exception as e:
+            print(f"Error extrayendo de cablevisionhd: {e}")
+            
+        return streams
+    
+    def extract_telegratishd(self):
+        """Extrae streams de telegratishd.com"""
+        print("Extrayendo streams de telegratishd.com...")
+        streams = []
+        try:
+            response = self.session.get('https://www.telegratishd.com/', timeout=15)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Buscar contenedores de canales
+            channel_containers = soup.find_all(['div', 'li'], class_=re.compile(r'channel|canal'))
+            for container in channel_containers:
+                # Buscar enlaces dentro del contenedor
+                links = container.find_all('a', href=True)
+                for link in links:
+                    href = link.get('href')
+                    if href:
+                        full_url = urljoin('https://www.telegratishd.com/', href)
+                        channel_name = link.get_text(strip=True)
+                        
+                        # Obtener URL directa del stream
+                        stream_url = self.get_direct_stream_url(full_url)
+                        if stream_url:
+                            streams.append({
+                                'name': channel_name,
+                                'url': stream_url,
+                                'source': 'telegratishd'
+                            })
+                            
+        except Exception as e:
+            print(f"Error extrayendo de telegratishd: {e}")
+            
+        return streams
+    
+    def get_direct_stream_url(self, page_url):
+        """Obtiene la URL directa del stream desde una página de canal"""
+        try:
+            response = self.session.get(page_url, timeout=10)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Buscar iframes
+            iframes = soup.find_all('iframe')
+            for iframe in iframes:
+                src = iframe.get('src')
+                if src and any(ext in src for ext in ['.m3u8', '.ts']):
+                    return src
+                    
+            # Buscar en scripts
+            scripts = soup.find_all('script')
+            for script in scripts:
+                if script.string:
+                    m3u8_matches = re.findall(r'["\']([^"\']*\.m3u8[^"\']*)["\']', script.string)
+                    for match in m3u8_matches:
+                        if 'http' in match:
+                            return match
+                            
+        except Exception as e:
+            print(f"Error obteniendo stream directo de {page_url}: {e}")
+            
+        return None
+
+def parse_m3u(file_path):
+    """Parse an M3U file and extract stream URLs along with their channel names."""
+    streams = []
+    channel_names = []
+    original_lines = []
+    
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            lines = file.readlines()
+            original_lines = lines
+            
+            for line in lines:
+                line = line.strip()
+                if line.startswith("#EXTINF:"):
+                    # Extract channel name (tvg-name)
+                    match = re.search(r'tvg-name="([^"]+)"', line)
+                    if match:
+                        channel_name = match.group(1)
+                        # Ignore lines with tvg-name containing special characters
+                        if not any(char in channel_name for char in ['✦●✦', '❌', '✅']):
+                            channel_names.append(channel_name)
+                        else:
+                            channel_names.append(None)  # Add None for this stream to skip later
+                    else:
+                        # Si no hay tvg-name, buscar el nombre al final
+                        parts = line.split(',')
+                        if len(parts) > 1:
+                            channel_names.append(parts[-1].strip())
+                        else:
+                            channel_names.append("Unknown Channel")
+                elif line and not line.startswith("#"):
+                    streams.append(line)
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+        return [], [], []
+
+    return streams, channel_names, original_lines
+
+def check_stream_ffprobe(url):
+    """Check if a stream is online using ffprobe."""
+    try:
+        command = [
+            "ffprobe", 
+            "-hide_banner", 
+            "-loglevel", "error", 
+            "-i", url
+        ]
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=10)
+        if result.returncode == 0:
+            return True  # Stream is online
+        else:
+            return False  # Stream is offline
+    except subprocess.TimeoutExpired:
+        return False  # Timeout indicates offline stream
+    except Exception as e:
+        print(f"Error checking stream {url}: {e}")
+        return False
+
+def generate_m3u_content(streams, title="IPTV Streams"):
+    """Genera el contenido M3U a partir de una lista de streams"""
+    content = f"#EXTM3U\n"
+    
+    for i, stream in enumerate(streams, 1):
+        name = stream.get('name', f'Canal {i}')
+        url = stream.get('url', '')
+        source = stream.get('source', 'unknown')
+        
+        content += f'#EXTINF:-1 tvg-name="{name}" tvg-logo="" group-title="{source.upper()}",{name}\n'
+        content += f'{url}\n'
+    
+    return content
+
+def save_m3u_file(content, filename):
+    """Guarda el contenido M3U en un archivo"""
+    try:
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(content)
+        print(f"Archivo guardado: {filename}")
+    except Exception as e:
+        print(f"Error guardando archivo {filename}: {e}")
+
+def display_progress_bar(current, total, prefix="Progress"):
+    """Display an animated progress bar."""
+    bar_length = 40
+    if total > 0:
+        progress = int(bar_length * current / total)
+        bar = f"[{'#' * progress}{'-' * (bar_length - progress)}]"
+        sys.stdout.write(f"\r{prefix}: {bar} {current}/{total}")
+        sys.stdout.flush()
+
+def check_streams_threaded(streams, max_workers=10):
+    """Verifica streams usando múltiples hilos"""
+    results = {}
+    offline_streams = []
+    checked_count = 0
+    
+    def check_single_stream(stream_data):
+        nonlocal checked_count
+        url = stream_data['url']
+        name = stream_data['name']
+        
+        is_online = check_stream_ffprobe(url)
+        status = "Online" if is_online else f"Offline - {name} - {url}"
+        
+        with threading.Lock():
+            results[url] = status
+            if not is_online:
+                offline_streams.append(status)
+            checked_count += 1
+            display_progress_bar(checked_count, len(streams), "Verificando streams")
+        
+        return is_online
+    
+    # Verificar streams en paralelo
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_stream = {executor.submit(check_single_stream, stream): stream for stream in streams}
+        
+        for future in as_completed(future_to_stream):
+            try:
+                future.result()
+            except Exception as e:
+                print(f"\nError verificando stream: {e}")
+    
+    print("\n")
+    return results, offline_streams
+
+def show_main_menu():
+    """Muestra el menú principal"""
+    print("\n" + "="*50)
+    print("       IPTV EXTRACTOR Y VERIFICADOR")
+    print("="*50)
+    print("1. Extraer streams de páginas web")
+    print("2. Verificar archivo M3U existente")
+    print("3. Salir")
+    print("="*50)
+
+def show_extraction_menu():
+    """Muestra el menú de extracción"""
+    print("\n" + "="*50)
+    print("        SELECCIONAR PÁGINAS")
+    print("="*50)
+    print("1. tvplusgratis2.com")
+    print("2. vertvcable.com")
+    print("3. cablevisionhd.com")
+    print("4. telegratishd.com")
+    print("5. Todas las páginas")
+    print("6. Selección múltiple")
+    print("7. Volver al menú principal")
+    print("="*50)
+
+def show_verification_menu():
+    """Muestra el menú de verificación"""
+    print("\n¿Deseas verificar los streams extraídos?")
+    print("1. Sí, verificar todos los streams")
+    print("2. No, guardar sin verificar")
+    print("3. Cancelar")
+
+def show_save_menu():
+    """Muestra el menú de guardado"""
+    print("\n¿Cómo deseas guardar los streams?")
+    print("1. Archivo único combinado")
+    print("2. Archivos separados por página")
+    print("3. Ambos (combinado + separados)")
+    print("4. No guardar")
+
+def get_user_choice(max_option):
+    """Obtiene la elección del usuario"""
+    while True:
+        try:
+            choice = input(f"\nSelecciona una opción (1-{max_option}): ")
+            choice = int(choice)
+            if 1 <= choice <= max_option:
+                return choice
+            else:
+                print(f"Por favor, ingresa un número entre 1 y {max_option}")
+        except ValueError:
+            print("Por favor, ingresa un número válido")
+
+def get_multiple_choice():
+    """Obtiene múltiples opciones del usuario"""
+    print("\nIngresa los números separados por comas (ej: 1,2,4):")
+    print("1=tvplusgratis2, 2=vertvcable, 3=cablevisionhd, 4=telegratishd")
+    
+    while True:
+        try:
+            choices = input("Opciones: ")
+            choices = [int(x.strip()) for x in choices.split(',')]
+            if all(1 <= choice <= 4 for choice in choices):
+                return choices
+            else:
+                print("Por favor, ingresa números entre 1 y 4")
+        except ValueError:
+            print("Por favor, ingresa números válidos separados por comas")
+
+def extract_streams_by_choice(extractor, choices):
+    """Extrae streams según las opciones seleccionadas"""
+    all_streams = []
+    page_names = ["tvplusgratis2", "vertvcable", "cablevisionhd", "telegratishd"]
+    
+    for choice in choices:
+        if choice == 1:
+            streams = extractor.extract_tvplusgratis2()
+        elif choice == 2:
+            streams = extractor.extract_vertvcable()
+        elif choice == 3:
+            streams = extractor.extract_cablevisionhd()
+        elif choice == 4:
+            streams = extractor.extract_telegratishd()
+        else:
+            continue
+            
+        all_streams.extend(streams)
+        print(f"Extraídos {len(streams)} streams de {page_names[choice-1]}")
+    
+    return all_streams
+
+def main():
+    while True:
+        show_main_menu()
+        main_choice = get_user_choice(3)
+        
+        if main_choice == 1:
+            # Extraer streams
+            extractor = IPTVExtractor()
+            
+            while True:
+                show_extraction_menu()
+                extract_choice = get_user_choice(7)
+                
+                if extract_choice == 7:
+                    break
+                
+                print(f"\nIniciando extracción...")
+                
+                if extract_choice == 1:
+                    all_streams = extract_streams_by_choice(extractor, [1])
+                elif extract_choice == 2:
+                    all_streams = extract_streams_by_choice(extractor, [2])
+                elif extract_choice == 3:
+                    all_streams = extract_streams_by_choice(extractor, [3])
+                elif extract_choice == 4:
+                    all_streams = extract_streams_by_choice(extractor, [4])
+                elif extract_choice == 5:
+                    all_streams = extract_streams_by_choice(extractor, [1, 2, 3, 4])
+                elif extract_choice == 6:
+                    choices = get_multiple_choice()
+                    all_streams = extract_streams_by_choice(extractor, choices)
+                
+                if not all_streams:
+                    print("No se encontraron streams")
+                    continue
+                
+                print(f"\nTotal de streams extraídos: {len(all_streams)}")
+                
+                # Verificar streams
+                show_verification_menu()
+                verify_choice = get_user_choice(3)
+                
+                if verify_choice == 1:
+                    print("\nVerificando streams...")
+                    results, offline_streams = check_streams_threaded(all_streams)
+                    
+                    # Filtrar streams online
+                    online_streams = [s for s in all_streams if results.get(s['url'], '').startswith('Online')]
+                    
+                    if offline_streams:
+                        print(f"\nStreams offline encontrados: {len(offline_streams)}")
+                        for i, offline in enumerate(offline_streams[:5]):  # Mostrar solo los primeros 5
+                            print(f"  {i+1}. {offline}")
+                        if len(offline_streams) > 5:
+                            print(f"  ... y {len(offline_streams) - 5} más")
+                    
+                    all_streams = online_streams
+                    print(f"Streams online verificados: {len(all_streams)}")
+                
+                elif verify_choice == 3:
+                    continue
+                
+                if not all_streams:
+                    print("No hay streams válidos para guardar")
+                    continue
+                
+                # Guardar archivos
+                show_save_menu()
+                save_choice = get_user_choice(4)
+                
+                if save_choice == 1:
+                    # Archivo único
+                    filename = "iptv_combined.m3u"
+                    content = generate_m3u_content(all_streams, "IPTV Combined")
+                    save_m3u_file(content, filename)
+                    
+                elif save_choice == 2:
+                    # Archivos separados
+                    sources = set(s['source'] for s in all_streams)
+                    for source in sources:
+                        source_streams = [s for s in all_streams if s['source'] == source]
+                        filename = f"iptv_{source}.m3u"
+                        content = generate_m3u_content(source_streams, f"IPTV {source.upper()}")
+                        save_m3u_file(content, filename)
+                        
+                elif save_choice == 3:
+                    # Ambos
+                    filename = "iptv_combined.m3u"
+                    content = generate_m3u_content(all_streams, "IPTV Combined")
+                    save_m3u_file(content, filename)
+                    
+                    sources = set(s['source'] for s in all_streams)
+                    for source in sources:
+                        source_streams = [s for s in all_streams if s['source'] == source]
+                        filename = f"iptv_{source}.m3u"
+                        content = generate_m3u_content(source_streams, f"IPTV {source.upper()}")
+                        save_m3u_file(content, filename)
+                
+                print("\nProceso completado!")
+                break
+        
+        elif main_choice == 2:
+            # Verificar archivo M3U
+            filename = input("\nIngresa el nombre del archivo M3U: ")
+            if not os.path.exists(filename):
+                print(f"Archivo '{filename}' no encontrado")
+                continue
+            
+            print(f"Verificando streams en '{filename}'...")
+            
+            # Parsear archivo M3U
+            streams, channel_names, original_lines = parse_m3u(filename)
+            if not streams:
+                print("No se encontraron streams en el archivo")
+                continue
+            
+            # Convertir a formato de diccionario
+            stream_list = []
+            for url, name in zip(streams, channel_names):
+                if name is not None:  # Skip streams with special characters
+                    stream_list.append({'url': url, 'name': name})
+            
+            # Verificar streams
+            results, offline_streams = check_streams_threaded(stream_list)
+            
+            # Mostrar resumen
+            online_count = len(stream_list) - len(offline_streams)
+            print(f"\nResumen de verificación:")
+            print(f"- Streams online: {online_count}")
+            print(f"- Streams offline: {len(offline_streams)}")
+            print(f"- Total verificados: {len(stream_list)}")
+            
+            if offline_streams:
+                print(f"\nStreams offline encontrados:")
+                for i, offline in enumerate(offline_streams[:10]):  # Mostrar solo los primeros 10
+                    print(f"  {i+1}. {offline}")
+                if len(offline_streams) > 10:
+                    print(f"  ... y {len(offline_streams) - 10} más")
+        
+        elif main_choice == 3:
+            print("\nGracias por usar IPTV Extractor!")
+            break
+
+if __name__ == "__main__":
+    main()
+
+
+
+    pero no funciona
+
+
+C:\Users\felip\Desktop\series_extractor\futuram>python iptv2.py
+
+==================================================
+       IPTV EXTRACTOR Y VERIFICADOR
+==================================================
+1. Extraer streams de páginas web
+2. Verificar archivo M3U existente
+3. Salir
+==================================================
+
+Selecciona una opción (1-3): 1
+
+==================================================
+        SELECCIONAR PÁGINAS
+==================================================
+1. tvplusgratis2.com
+2. vertvcable.com
+3. cablevisionhd.com
+4. telegratishd.com
+5. Todas las páginas
+6. Selección múltiple
+7. Volver al menú principal
+==================================================
+
+Selecciona una opción (1-7): 1
+
+Iniciando extracción...
+Extrayendo streams de tvplusgratis2.com...
+Extraídos 0 streams de tvplusgratis2
+No se encontraron streams
+
+==================================================
+        SELECCIONAR PÁGINAS
+==================================================
+1. tvplusgratis2.com
+2. vertvcable.com
+3. cablevisionhd.com
+4. telegratishd.com
+5. Todas las páginas
+6. Selección múltiple
+7. Volver al menú principal
+==================================================
+
+Selecciona una opción (1-7): 1
+
+Iniciando extracción...
+Extrayendo streams de tvplusgratis2.com...
+Extraídos 0 streams de tvplusgratis2
+No se encontraron streams
+
+==================================================
+        SELECCIONAR PÁGINAS
+==================================================
+1. tvplusgratis2.com
+2. vertvcable.com
+3. cablevisionhd.com
+4. telegratishd.com
+5. Todas las páginas
+6. Selección múltiple
+7. Volver al menú principal
+==================================================
+
+Selecciona una opción (1-7):
+
+hay qie agregar  metoos para extraer las urls muchas veces estas paginas las protegen con muchos y distintos y variados metodos ojalas los concoas todos y ojalas lo puedas implementar todo para realizar la tarea con exito
+
+hay que revisar las estrcuturas funcionamientos caracteristicas de la pagina metodos de obfuscacion encryptacion de urls  muchos debuggers pero concer como funciona bien la pagina llegar a reproducir algun  capitulo tu de manera manual para que veas como funciona su estrcutura e intentes por tu cuenta obtener el url con debuggers u otros metodos que conoscas si puedes usa varios todos de ser posibles uno a uno
+
+revisa todas las paginas con stream que te di debugealas y  analiza bien apra poder sextrear los urls reales y directo y asu vez crear  la lista m3u en base al scirpt /el-canal-del-futbol-ecdf-en-vivo/
+
+
+
+
+
+
+
+
+
+
+ https://embed.ksdjugfsddeports.fun/   // pagina donde mlas paginas de abajo obtiene  las urls para mlos streams
+
+ https://www.telegratishd.com/
+https://www.tvplusgratis2.com/
+https://www.cablevisionhd.com/
+
+
+no se como funciona el webscrapping y si se necesita el url de cada canal en si para poder extraer los urls directo de los videos de los canales de los cuales se esta haciendo streaming o no. pero no creo que esta demas explicarlo
+
+la primera https://www.tvplusgratis2.com/
+
+al ingresar al url principal https://www.tvplusgratis2.com/ de una sola vez puedes ver todos los canales que hay en la website  en esta por ejemplo estan estos
+
+
+
+
+
+TV PLUS GRATIS
+
+Eventos
+
+
+
+
+
+
+
+
+
+
+
+
+Disfruta tu canal favorito gratis ♥
+
+Buscar canal...
+
+Red Social
+Mundo Latam 🌐
+Mundo Latam 🌐
+
+
+Ver canal
+Donacion
+Donar con Paypal
+Donar con Paypal
+
+
+Ver canal
+En vivo 🟢
+Sky Sports La Liga
+Ver Sky Sports La Liga en vivo
+
+
+Ver canal
+En vivo 🟢
+TUDN
+Ver TUDN en vivo
+
+
+Ver canal
+En vivo 🟢
+Liga 1
+Ver Liga 1 en vivo
+
+
+Ver canal
+En vivo 🟢
+Liga 1 Max
+Ver Liga 1 Max en vivo
+
+
+Ver canal
+En vivo 🟢
+Gol Perú
+Ver Gol Perú en vivo
+
+
+Ver canal
+En vivo 🟢
+TNT SPORTS
+Ver TNT SPORTS en vivo
+
+
+Ver canal
+En vivo 🟢
+TNT SPORTS CHILE
+Ver TNT SPORTS CHILE en vivo
+
+
+Ver canal
+En vivo 🟢
+Fox Sports Premium
+Ver Fox Sports Premium en vivo
+
+
+Ver canal
+En vivo 🟢
+TYC Sports
+Ver TYC Sports en vivo
+
+
+Ver canal
+En vivo 🟢
+Dazn F1
+Ver Dazn F1 en vivo
+
+
+Ver canal
+En vivo 🟢
+Dazn La Liga
+Ver Dazn La Liga en vivo
+
+
+Ver canal
+En vivo 🟢
+Directv Sports
+Ver Directv Sports en vivo
+
+
+Ver canal
+En vivo 🟢
+Directv Sports 2
+Ver Directv Sports 2 en vivo
+
+
+Ver canal
+En vivo 🟢
+Directv Sports Plus
+Ver Directv Sports Plus en vivo
+
+
+Ver canal
+En vivo 🟢
+Espn Premium
+Ver Espn Premium en vivo
+
+
+Ver canal
+En vivo 🟢
+Espn
+Ver Espn en vivo
+
+
+Ver canal
+En vivo 🟢
+Espn 2
+Ver Espn 2 en vivo
+
+
+Ver canal
+En vivo 🟢
+Espn 3
+Ver Espn 3 en vivo
+
+
+Ver canal
+En vivo 🟢
+Espn 4
+Ver Espn 4 en vivo
+
+
+Ver canal
+En vivo 🟢
+Espn Mexico
+Ver Espn Mexico en vivo
+
+
+Ver canal
+En vivo 🟢
+Espn 2 Mexico
+Ver Espn 2 Mexico en vivo
+
+
+Ver canal
+En vivo 🟢
+Espn 3 Mexico
+Ver Espn 3 Mexico en vivo
+
+
+Ver canal
+En vivo 🟢
+Fox Sports
+Ver Fox Sports en vivo
+
+
+Ver canal
+En vivo 🟢
+Fox Sports 2
+Ver Fox Sports 2 en vivo
+
+
+Ver canal
+En vivo 🟢
+Fox Sports 3
+Ver Fox Sports 3 en vivo
+
+
+Ver canal
+En vivo 🟢
+Fox Sports Mexico
+Ver Fox Sports Mexico en vivo
+
+
+Ver canal
+En vivo 🟢
+Fox Sports 2 Mexico
+Ver Fox Sports 2 Mexico en vivo
+
+Ver canal
+En vivo 🟢
+Fox Sports 3 Mexico
+Ver Fox Sports 3 Mexico en vivo
+
+
+Ver canal
+En vivo 🟢
+Telemundo 51
+Ver Telemundo 51 en vivo
+
+Ver canal
+En vivo 🟢
+Telemundo Puerto Rico
+Ver Telemundo Puerto Rico en vivo
+
+Ver canal
+En vivo 🟢
+Telemundo Internacional
+Ver Telemundo Internacional en vivo
+
+Ver canal
+En vivo 🟢
+RCN
+Ver RCN en vivo
+
+Ver canal
+En vivo 🟢
+Antena 3
+Ver Antena 3 en vivo
+
+Ver canal
+En vivo 🟢
+Global TV
+Ver Global TV en vivo
+
+Ver canal
+En vivo 🟢
+Latina
+Ver Latina en vivo
+
+Ver canal
+En vivo 🟢
+America TV
+Ver America TV en vivo
+
+Ver canal
+En vivo 🟢
+Willax TV
+Ver Willax TV en vivo
+
+Ver canal
+En vivo 🟢
+Azteca 7
+Ver Azteca 7 en vivo
+
+
+Ver canal
+En vivo 🟢
+Canal 5
+Ver Canal 5 en vivo
+
+
+Ver canal
+En vivo 🟢
+Disney Channel
+Ver Disney Channel en vivo
+
+
+Ver canal
+En vivo 🟢
+Disney JR
+Ver Disney JR en vivo
+
+
+Ver canal
+En vivo 🟢
+Universal Channel
+Ver Universal Channel en vivo
+
+
+Ver canal
+En vivo 🟢
+Universal Cinema
+Ver Universal Cinema en vivo
+
+
+Ver canal
+En vivo 🟢
+Universal Premiere
+Ver Universal Premiere en vivo
+
+
+Ver canal
+En vivo 🟢
+TNT Series
+Ver TNT en vivo
+
+
+Ver canal
+En vivo 🟢
+TNT Series
+Ver TNT Series en vivo
+
+
+Ver canal
+En vivo 🟢
+TNT Novelas
+Ver TNT Novelas en vivo
+
+
+Ver canal
+En vivo 🟢
+Star Channel
+Ver Star Channel en vivo
+
+
+Ver canal
+En vivo 🟢
+Cinemax
+Ver Cinemax en vivo
+
+
+Ver canal
+En vivo 🟢
+Space
+Ver Space en vivo
+
+
+Ver canal
+En vivo 🟢
+Syfy
+Ver SYFY en vivo
+
+
+Ver canal
+En vivo 🟢
+Warner Channel
+Ver Warner Channel en vivo
+
+
+Ver canal
+En vivo 🟢
+Cinecanal
+Ver Cinecanal en vivo
+
+
+Ver canal
+En vivo 🟢
+FX
+Ver FX en vivo
+
+
+Ver canal
+En vivo 🟢
+AXN
+Ver AXN en vivo
+
+
+Ver canal
+En vivo 🟢
+AMC
+Ver AMC en vivo
+
+
+Ver canal
+En vivo 🟢
+Golden
+Ver Golden en vivo
+
+
+Ver canal
+En vivo 🟢
+Golden Plus
+Ver Golden Plus en vivo
+
+
+Ver canal
+En vivo 🟢
+Golden Edge
+Ver Golden Edge en vivo
+
+
+Ver canal
+En vivo 🟢
+Canal Sony
+Ver Canal Sony en vivo
+
+
+Ver canal
+En vivo 🟢
+Dragon Ball Super 24/7
+Ver Dragon Ball Super 24/7 en vivo
+
+
+Ver canal
+
+facebook sharing button Compartirtelegram sharing button Compartirwhatsapp sharing button Compartirmessenger sharing button Compartirtwitter sharing button Twittearsharethis sharing button Compartir
+
+
+TV PLUS GRATIS 2 2025 © Todos los derechos reservados.
+
+facebook sharing buttontelegram sharing buttonwhatsapp sharing buttonmessenger sharing buttontwitter sharing buttonsharethis sharing buttonarrow_right sharing button
+Nota
+Destacar
+Explicar
+ para poder ver cada uno hay que elegir mpor ejemplo ver spn en vivo y hay que darle click a la imagen del canal  arriba de donde dice ver canal se abriran  prograpagandas o ppops ups asi que hay que cliquear  1 o 2 veces y revisar que no estes en otra pagina que no sea https://www.tvplusgratis2.com/ si todo fue o salio bien seremos redigiridos a  https://www.tvplusgratis2.com/espn-en-vivo.html y ahi el reproductor se reproducira de forma automatica desde ahi mismo se puedee extraer el iurl del video de la pagina el video directo para la lista m3u
+
+ ES MAS TENGO BUENISMAS NOTICIAS HICE CLICK EN EL VIDEO REPRUCTOR DEL STREAM DE SPN  EN VIVO Y ME LLEVO A:
+
+
+ https://embed.ksdjugfsddeports.fun/ << CREO QUE ESA PAGINA ES DE DONDE TODAS LAS PAGINAS DE STREAM DE IPTV CON CANALES  COMO HISTORY CHANNEL STAR CHANNEL WARNER CHANNEL ENTRE MUCHOS MAS LOS OBTIENEN DESDE AQUI  https://embed.ksdjugfsddeports.fun/ EN ESA PAGINA APARECEN MUCHOS CANALES
+   PARA QUE VEAS SON TODOS ESTOS 
+
+
+⚠️ ¡Hola! ¿Quieres adquirir alguno de estos canales sin publicidad? Comunicate con nosotros via whatsapp al "+51 924 530 915" o haciendo
+
+Click Aquí
+DEPORTES
+ Activo
+TUDN
+Link
+
+ Activo
+GOL PERU
+Link
+
+ Activo
+TNT SPORTS
+Link
+
+ Activo
+ESPN PREMIUM LAT
+Link
+
+ Activo
+ESPN PREMIUM ARGENTINA
+Link
+
+ Activo
+TYC SPORTS
+Link
+
+ Activo
+FOX SPORTS
+Link
+
+ Activo
+FOX SPORTS 2
+Link
+
+ Activo
+FOX SPORTS 3
+Link
+
+ Activo
+FOX DEPORTES
+Link
+
+ Activo
+ESPN LAT
+Link
+
+ Activo
+ESPN ARGENTINA
+Link
+
+ Activo
+ESPN COLOMBIA
+Link
+
+ Activo
+ESPN 2
+Link
+
+ Activo
+ESPN 3
+Link
+
+ Activo
+ESPN 4
+Link
+
+ Activo
+ESPN 5
+Link
+
+ Activo
+ESPN 6
+Link
+
+ Activo
+ESPN 7
+Link
+
+ Activo
+DIRECTV SPORTS
+Link
+
+ Activo
+DIRECTV SPORTS 2
+Link
+
+ Activo
+DIRECTV SPORTS PLUS
+Link
+
+ Activo
+FOX SPORTS MX
+Link
+
+ Activo
+FOX SPORTS 2 MX
+Link
+
+ Activo
+FOX SPORTS 3 MX
+Link
+
+ Activo
+ESPN MX
+Link
+
+ Activo
+ESPN 2 MX
+Link
+
+ Activo
+ESPN 3 MX
+Link
+
+ Activo
+ESPN 4 MX
+Link
+
+ Activo
+ESPN 5 MX
+Link
+
+ Activo
+TVC DEPORTES
+Link
+
+ Activo
+LIGA 1
+Link
+
+ Activo
+LIGA 1 MAX
+Link
+
+ Activo
+FOX SPORTS PREMIUM
+Link
+
+ Activo
+MOVISTAR DEPORTES PE
+Link
+
+ Activo
+DAZN F1
+Link
+
+ Activo
+DAZN LA LIGA
+Link
+
+ Activo
+M. LIGA DE CAMPEONES
+Link
+
+ Activo
+WIN SPORTS
+Link
+
+ Activo
+WIN SPORTS PLUS
+Link
+
+ Activo
+BEIN SPORTS XTRA
+Link
+
+ Activo
+MOVISTAR LA LIGA
+Link
+
+ Activo
+NBA
+Link
+
+ Activo
+MOVISTAR DEPORTES ES
+Link
+
+ Activo
+AZTECA DEPORTES
+Link
+
+ Activo
+TNT SPORTS CHILE
+Link
+
+ Activo
+MLB NETWORK
+Link
+
+ Activo
+SKY SPORTS MX
+Link
+
+ Activo
+SKY SPORTS BUNDESLIGA
+Link
+
+ Activo
+SKY SPORTS F1
+Link
+
+REGIONALES
+ Activo
+AZTECA 7
+Link
+
+ Activo
+CANAL 5
+Link
+
+ Activo
+LATINA
+Link
+
+ Activo
+AMERICA TV
+Link
+
+ Activo
+SPACE
+Link
+
+ Activo
+WARNER BROS TV
+Link
+
+ Activo
+TNT
+Link
+
+ Activo
+STAR CHANNEL
+Link
+
+ Activo
+CINEMAX
+Link
+
+ Activo
+CINECANAL
+Link
+
+ Activo
+TELEFE
+Link
+
+ Activo
+EL TRECE
+Link
+
+ Activo
+DISTRITO COMEDIA
+Link
+
+ Activo
+TELEMUNDO MIAMI
+Link
+
+ Activo
+HISTORY
+Link
+
+ Activo
+HISTORY 2
+Link
+
+ Activo
+PASIONES
+Link
+
+ Activo
+AZTECA UNO
+Link
+
+ Activo
+AZTECA INTERNACIONAL
+Link
+
+ Activo
+AZ CINEMA
+Link
+
+ Activo
+GALAVISION
+Link
+
+ Activo
+TLNOVELAS
+Link
+
+ Activo
+LAS ESTRELLAS
+Link
+
+ Activo
+SYFY USA
+Link
+
+ Activo
+CARACOL
+Link
+
+ Activo
+ATV
+Link
+
+ Activo
+UNIVISION
+Link
+
+ Activo
+UNICABLE
+Link
+
+ Activo
+FX
+Link
+
+ Activo
+GOLDEN PLUS
+Link
+
+ Activo
+GOLDEN EDGE
+Link
+
+ Activo
+GOLDEN PREMIERE
+Link
+
+ Activo
+GOLDEN PREMIERE 2
+Link
+
+ Activo
+TNT SERIES
+Link
+
+ Activo
+CANAL SONY
+Link
+
+ Activo
+AXN
+Link
+
+ Activo
+UNIVERSAL TV
+Link
+
+ Activo
+STUDIO UNIVERSAL
+Link
+
+ Activo
+MULTIPREMIER
+Link
+
+ Activo
+AMC
+Link
+
+ Activo
+PARAMOUNT CHANNEL
+Link
+
+ Activo
+DPELICULA
+Link
+
+ Activo
+MTV
+Link
+
+ Activo
+COMEDY CENTRAL
+Link
+
+ Activo
+NAT GEO
+Link
+
+ Activo
+ANIMAL PLANET
+Link
+
+ Activo
+DISCOVERY CHANNEL
+Link
+
+ Activo
+DISCOVERY TURBO
+Link
+
+ Activo
+DISCOVERY HYH
+Link
+
+ Activo
+ID INVESTIGATION
+Link
+
+ Activo
+DISCOVERY A&E
+Link
+
+ Activo
+DISCOVERY TLC
+Link
+
+ Activo
+DISCOVERY THEATER
+Link
+
+ Activo
+DISCOVERY WORLD
+Link
+
+ Activo
+EVERYTHING
+Link
+
+ Activo
+LIFETIME
+Link
+
+ Activo
+EL GOURMET
+Link
+
+ Activo
+DISNEY JUNIOR
+Link
+
+ Activo
+NICK
+Link
+
+ Activo
+NICK JR
+Link
+
+ Activo
+CARTOON NETWORK
+Link
+
+ Activo
+CARTOONITO
+Link
+
+ Activo
+TOONCAST
+Link
+
+ Activo
+DISCOVERY KIDS
+Link
+
+ Activo
+TELEMUNDO PUERTO RICO
+Link
+
+ Activo
+AZ CORAZON
+Link
+
+ Activo
+AZ CLICK
+Link
+
+ Activo
+A3SERIES
+Link
+
+ Activo
+NAT GEO MUNDO
+Link
+
+ Activo
+WILLAX TV
+Link
+
+ Activo
+GLOBAL TV PERU
+Link
+
+ Activo
+RCN
+Link
+
+ Activo
+TELEHIT
+Link
+
+ Activo
+ODISEA
+Link
+
+ Activo
+MOVISTAR ACCION
+Link
+
+ Activo
+ANTENA 3
+Link
+
+ Activo
+TV PUBLICA
+Link
+
+ Activo
+DISNEY CHANNEL
+Link
+
+ Activo
+TNT NOVELAS
+Link
+
+ Activo
+UNIVERSAL CINEMA
+Link
+
+ Activo
+FM HOT KIDS
+Link
+
+ Activo
+TELEMUNDO 51 FLORIDA
+Link   
+
+
+
+ TODOS LOS CANALES QUE HEMOS VISTO EN LAS PAGINAS ANTERIOR.  PERO POR EJEMPLOSI EN ETA NEUVA PAGINA  https://embed.ksdjugfsddeports.fun/ HAGO CLICK EN LINK EN UN CANAL EJEMPLO EL CANAL tudn me lleva a esta direccion https://embed.ksdjugfsddeports.fun/tudn.php y en esta pagina  veo la siguiente informacion
+
+
+
+
+
+
+
+
+
+
+Status: 🟢
+
+
+
+
+JW PLAYER
+<script type='text/javascript'> width='100%', height='100%', id='tudn';</script><script type='text/javascript' src='https://embed.ksdjugfsddeports.fun/embed2.js'></script>
+ 
+<iframe src="https://embed.ksdjugfsddeports.fun/embed2/tudn.html" width="100%" height="100%"  scrolling="no" frameborder="0" allowfullscreen="true"></iframe>
+CLAPPR
+<script type='text/javascript'> width='100%', height='100%', id='tudn';</script><script type='text/javascript' src='https://embed.ksdjugfsddeports.fun/embed.js'></script>
+ 
+<iframe src="https://embed.ksdjugfsddeports.fun/embed/tudn.html" width="100%" height="100%"  scrolling="no" frameborder="0" allowfullscreen="true"></iframe>
+
+
+
+
+
+
+
+no se si esto no podrias ayudar par ano usar las otras paginas y desde aqui tener todo directamente lo raro es que en esta nueva pagina no hay videos nada... solo eso 
+
+
+
+
+
+
+
+
+Status: 🟢
+
+
+
+
+JW PLAYER
+<script type='text/javascript'> width='100%', height='100%', id='tudn';</script><script type='text/javascript' src='https://embed.ksdjugfsddeports.fun/embed2.js'></script>
+ 
+<iframe src="https://embed.ksdjugfsddeports.fun/embed2/tudn.html" width="100%" height="100%"  scrolling="no" frameborder="0" allowfullscreen="true"></iframe>
+CLAPPR
+<script type='text/javascript'> width='100%', height='100%', id='tudn';</script><script type='text/javascript' src='https://embed.ksdjugfsddeports.fun/embed.js'></script>
+ 
+<iframe src="https://embed.ksdjugfsddeports.fun/embed/tudn.html" width="100%" height="100%"  scrolling="no" frameborder="0" allowfullscreen="true"></iframe>
+
+
+
+
+

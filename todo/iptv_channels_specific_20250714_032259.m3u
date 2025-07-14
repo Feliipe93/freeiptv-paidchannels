@@ -1,0 +1,56 @@
+#EXTM3U
+
+# ========== HISTORIA Y DOCUMENTALES ==========
+#EXTINF:-1 tvg-name="History Channel (Demo)" group-title="Historia y Documentales" tvg-logo="",History Channel (Demo) [telegratishd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="History 2 (Demo)" group-title="Historia y Documentales" tvg-logo="",History 2 (Demo) [telegratishd] (demo)
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+#EXTINF:-1 tvg-name="Discovery Channel (Demo)" group-title="Historia y Documentales" tvg-logo="",Discovery Channel (Demo) [telegratishd] (demo)
+https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8
+#EXTINF:-1 tvg-name="Animal Planet (Demo)" group-title="Historia y Documentales" tvg-logo="",Animal Planet (Demo) [telegratishd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="History Channel (Demo)" group-title="Historia y Documentales" tvg-logo="",History Channel (Demo) [cablevisionhd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="Discovery Channel (Demo)" group-title="Historia y Documentales" tvg-logo="",Discovery Channel (Demo) [cablevisionhd] (demo)
+https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8
+
+# ========== DEPORTES ==========
+#EXTINF:-1 tvg-name="ESPN (Demo)" group-title="Deportes" tvg-logo="",ESPN (Demo) [telegratishd] (demo)
+https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8
+#EXTINF:-1 tvg-name="ESPN 2 (Demo)" group-title="Deportes" tvg-logo="",ESPN 2 (Demo) [telegratishd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="TNT Sports (Demo)" group-title="Deportes" tvg-logo="",TNT Sports (Demo) [telegratishd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="Fox Sports (Demo)" group-title="Deportes" tvg-logo="",Fox Sports (Demo) [telegratishd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="ESPN (Demo)" group-title="Deportes" tvg-logo="",ESPN (Demo) [tvplusgratis2] (demo)
+https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8
+#EXTINF:-1 tvg-name="Fox Sports (Demo)" group-title="Deportes" tvg-logo="",Fox Sports (Demo) [tvplusgratis2] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="ESPN (Demo)" group-title="Deportes" tvg-logo="",ESPN (Demo) [cablevisionhd] (demo)
+https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8
+#EXTINF:-1 tvg-name="Fox Sports (Demo)" group-title="Deportes" tvg-logo="",Fox Sports (Demo) [cablevisionhd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+# ========== ENTRETENIMIENTO ==========
+#EXTINF:-1 tvg-name="Warner Channel (Demo)" group-title="Entretenimiento" tvg-logo="",Warner Channel (Demo) [telegratishd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="Universal Channel (Demo)" group-title="Entretenimiento" tvg-logo="",Universal Channel (Demo) [telegratishd] (demo)
+https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
+#EXTINF:-1 tvg-name="Star Channel (Demo)" group-title="Entretenimiento" tvg-logo="",Star Channel (Demo) [telegratishd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="Universal Channel (Demo)" group-title="Entretenimiento" tvg-logo="",Universal Channel (Demo) [tvplusgratis2] (demo)
+https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
+#EXTINF:-1 tvg-name="TNT Series (Demo)" group-title="Entretenimiento" tvg-logo="",TNT Series (Demo) [tvplusgratis2] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="Star Channel (Demo)" group-title="Entretenimiento" tvg-logo="",Star Channel (Demo) [tvplusgratis2] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="Warner Channel (Demo)" group-title="Entretenimiento" tvg-logo="",Warner Channel (Demo) [tvplusgratis2] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+#EXTINF:-1 tvg-name="Warner Channel (Demo)" group-title="Entretenimiento" tvg-logo="",Warner Channel (Demo) [cablevisionhd] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+# ========== OTROS ==========
+#EXTINF:-1 tvg-name="Universal Cinema (Demo)" group-title="Otros" tvg-logo="",Universal Cinema (Demo) [tvplusgratis2] (demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
