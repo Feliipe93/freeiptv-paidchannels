@@ -1,0 +1,219 @@
+#EXTM3U
+# Lista IPTV Fusionada - Generada el 2025-07-14
+# Total de canales: 87
+
+# ========== DEPORTES ==========
+#EXTINF:-1 tvg-name="Movistar Deportes" group-title="Deportes" tvg-logo="",Movistar Deportes
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="ESPN México" group-title="Deportes" tvg-logo="",ESPN México
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="ESPN 2 México" group-title="Deportes" tvg-logo="",ESPN 2 México
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="ESPN 3 México" group-title="Deportes" tvg-logo="",ESPN 3 México
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="ESPN 4 México" group-title="Deportes" tvg-logo="",ESPN 4 México
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="ESPN 4" group-title="Deportes" tvg-logo="",ESPN 4
+https://deportes.ksdjugfsddeports.fun/latam.php?stream=30_
+
+#EXTINF:-1 tvg-name="ESPN 6" group-title="Deportes" tvg-logo="",ESPN 6
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="ESPN Premium" group-title="Deportes" tvg-logo="",ESPN Premium
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Fox Sports" group-title="Deportes" tvg-logo="",Fox Sports
+https://deportes.ksdjugfsddeports.fun/latam4.php?stream=8_
+
+#EXTINF:-1 tvg-name="Fox Sports 2" group-title="Deportes" tvg-logo="",Fox Sports 2
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Fox Sports 3 México" group-title="Deportes" tvg-logo="",Fox Sports 3 México
+https://deportes.ksdjugfsddeports.fun/latam.php?stream=165_
+
+#EXTINF:-1 tvg-name="Fox Sports Premium" group-title="Deportes" tvg-logo="",Fox Sports Premium
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="DirecTV Sports" group-title="Deportes" tvg-logo="",DirecTV Sports
+https://deportes.ksdjugfsddeports.fun/latam4.php?stream=164_
+
+#EXTINF:-1 tvg-name="DirecTV Sports 2" group-title="Deportes" tvg-logo="",DirecTV Sports 2
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Win Sports Plus" group-title="Deportes" tvg-logo="",Win Sports Plus
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Azteca Deportes" group-title="Deportes" tvg-logo="",Azteca Deportes
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="TVC Deportes" group-title="Deportes" tvg-logo="",TVC Deportes
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="TNT Sports Chile" group-title="Deportes" tvg-logo="",TNT Sports Chile
+https://deportes.ksdjugfsddeports.fun/latam4.php?stream=77_
+
+#EXTINF:-1 tvg-name="TNT Sports" group-title="Deportes" tvg-logo="",TNT Sports
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Sky Sports México" group-title="Deportes" tvg-logo="",Sky Sports México
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="ESPN (Demo)" group-title="Deportes" tvg-logo="",ESPN (Demo)
+https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8
+
+#EXTINF:-1 tvg-name="ESPN 2 (Demo)" group-title="Deportes" tvg-logo="",ESPN 2 (Demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+#EXTINF:-1 tvg-name="Fox Sports (Demo)" group-title="Deportes" tvg-logo="",Fox Sports (Demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+#EXTINF:-1 tvg-name="TNT Sports (Demo)" group-title="Deportes" tvg-logo="",TNT Sports (Demo)
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+# ========== ENTRETENIMIENTO ==========
+#EXTINF:-1 tvg-name="Warner Channel" group-title="Entretenimiento" tvg-logo="",Warner Channel
+https://live.saohgdasregions.fun/latam4.php?stream=341_
+
+#EXTINF:-1 tvg-name="Universal Channel" group-title="Entretenimiento" tvg-logo="",Universal Channel
+https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
+
+#EXTINF:-1 tvg-name="Star Channel" group-title="Entretenimiento" tvg-logo="",Star Channel
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+#EXTINF:-1 tvg-name="TNT Series" group-title="Entretenimiento" tvg-logo="",TNT Series
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="TNT" group-title="Entretenimiento" tvg-logo="",TNT
+https://live.saohgdasregions.fun/latam4.php?stream=41_
+
+#EXTINF:-1 tvg-name="AMC" group-title="Entretenimiento" tvg-logo="",AMC
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="FX" group-title="Entretenimiento" tvg-logo="",FX
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Sony" group-title="Entretenimiento" tvg-logo="",Sony
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Paramount Channel" group-title="Entretenimiento" tvg-logo="",Paramount Channel
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="SyFy" group-title="Entretenimiento" tvg-logo="",SyFy
+https://embed.ksdjugfsddeports.fun/chat.php
+
+# ========== PELÍCULAS ==========
+#EXTINF:-1 tvg-name="Universal Cinema" group-title="Películas" tvg-logo="",Universal Cinema
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Golden Plus" group-title="Películas" tvg-logo="",Golden Plus
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Golden Premier" group-title="Películas" tvg-logo="",Golden Premier
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Golden Premier 2" group-title="Películas" tvg-logo="",Golden Premier 2
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Golden Edge" group-title="Películas" tvg-logo="",Golden Edge
+https://live.saohgdasregions.fun/latam4.php?stream=74_
+
+#EXTINF:-1 tvg-name="De Película" group-title="Películas" tvg-logo="",De Película
+https://embed.ksdjugfsddeports.fun/chat.php
+
+# ========== TELEVISIÓN ABIERTA ==========
+#EXTINF:-1 tvg-name="Telefe" group-title="Televisión Abierta" tvg-logo="",Telefe
+https://live.saohgdasregions.fun/latam4.php?stream=45_
+
+#EXTINF:-1 tvg-name="Azteca Uno" group-title="Televisión Abierta" tvg-logo="",Azteca Uno
+https://live.saohgdasregions.fun/latam4.php?stream=52_
+
+#EXTINF:-1 tvg-name="Azteca Internacional" group-title="Televisión Abierta" tvg-logo="",Azteca Internacional
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Canal 5" group-title="Televisión Abierta" tvg-logo="",Canal 5
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Univisión" group-title="Televisión Abierta" tvg-logo="",Univisión
+https://live.saohgdasregions.fun/latam3.php?stream=62_
+
+#EXTINF:-1 tvg-name="Galavisión" group-title="Televisión Abierta" tvg-logo="",Galavisión
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="RCN" group-title="Televisión Abierta" tvg-logo="",RCN
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Latina" group-title="Televisión Abierta" tvg-logo="",Latina
+https://live.saohgdasregions.fun/latam4.php?stream=4_
+
+#EXTINF:-1 tvg-name="Gol Perú" group-title="Televisión Abierta" tvg-logo="",Gol Perú
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Global TV" group-title="Televisión Abierta" tvg-logo="",Global TV
+https://embed.ksdjugfsddeports.fun/chat.php
+
+# ========== INFANTIL ==========
+#EXTINF:-1 tvg-name="Nickelodeon" group-title="Infantil" tvg-logo="",Nickelodeon
+https://embed.ksdjugfsddeports.fun/chat.php
+
+# ========== HISTORIA Y DOCUMENTALES ==========
+#EXTINF:-1 tvg-name="History Channel" group-title="Historia y Documentales" tvg-logo="",History Channel
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+#EXTINF:-1 tvg-name="History 2" group-title="Historia y Documentales" tvg-logo="",History 2
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+
+#EXTINF:-1 tvg-name="Discovery Channel" group-title="Historia y Documentales" tvg-logo="",Discovery Channel
+https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8
+
+#EXTINF:-1 tvg-name="Discovery H&H" group-title="Historia y Documentales" tvg-logo="",Discovery H&H
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Discovery TLC" group-title="Historia y Documentales" tvg-logo="",Discovery TLC
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Animal Planet" group-title="Historia y Documentales" tvg-logo="",Animal Planet
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+#EXTINF:-1 tvg-name="National Geographic Mundo" group-title="Historia y Documentales" tvg-logo="",National Geographic Mundo
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Investigation Discovery" group-title="Historia y Documentales" tvg-logo="",Investigation Discovery
+https://embed.ksdjugfsddeports.fun/chat.php
+
+# ========== FÓRMULA 1 Y MOTOR ==========
+#EXTINF:-1 tvg-name="DAZN F1" group-title="Fórmula 1 y Motor" tvg-logo="",DAZN F1
+https://embed.ksdjugfsddeports.fun/chat.php
+
+# ========== ESPECIALES ==========
+#EXTINF:-1 tvg-name="TUDN" group-title="Especiales" tvg-logo="",TUDN
+https://deportes.ksdjugfsddeports.fun/latam3.php?stream=1_
+
+#EXTINF:-1 tvg-name="Movistar Liga de Campeones" group-title="Especiales" tvg-logo="",Movistar Liga de Campeones
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Pasiones" group-title="Especiales" tvg-logo="",Pasiones
+https://embed.ksdjugfsddeports.fun/chat.php
+
+#EXTINF:-1 tvg-name="Az Corazón" group-title="Especiales" tvg-logo="",Az Corazón
+https://embed.ksdjugfsddeports.fun/chat.php
+
+# ========== DEMOS Y PRUEBAS ==========
+#EXTINF:-1 tvg-name="Big Buck Bunny Demo" group-title="Demos y Pruebas" tvg-logo="",Big Buck Bunny Demo
+https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
+
+#EXTINF:-1 tvg-name="Sintel Demo HLS" group-title="Demos y Pruebas" tvg-logo="",Sintel Demo HLS
+https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8
+
+#EXTINF:-1 tvg-name="Tears of Steel Demo" group-title="Demos y Pruebas" tvg-logo="",Tears of Steel Demo
+https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8
+
+#EXTINF:-1 tvg-name="Test Stream Demo" group-title="Demos y Pruebas" tvg-logo="",Test Stream Demo
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+
+#EXTINF:-1 tvg-name="Sample Stream Demo" group-title="Demos y Pruebas" tvg-logo="",Sample Stream Demo
+https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4
